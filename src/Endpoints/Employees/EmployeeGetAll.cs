@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace StoreAppStudy.Endpoints.Employees;
@@ -9,6 +10,10 @@ public class EmployeeGetAll {
     public static Delegate Handler => Action;
 
     public static IResult Action(UserManager<IdentityUser> userManager, int page, int rows) {
+
+        if(rows > 100) {
+            return Results.BadRequest("The number of rows cannot exceed 100.");
+        }
 
         var users = userManager.Users.Skip((page-1)*rows).Take(rows).ToList();
 
