@@ -8,9 +8,9 @@ public class EmployeeGetAll {
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handler => Action;
 
-    public static IResult Action(UserManager<IdentityUser> userManager) {
+    public static IResult Action(UserManager<IdentityUser> userManager, int page, int rows) {
 
-        var users = userManager.Users.ToList();
+        var users = userManager.Users.Skip((page-1)*rows).Take(rows).ToList();
 
         var response = new List<EmployeeResponse>();
 
