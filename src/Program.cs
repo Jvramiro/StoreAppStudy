@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using StoreAppStudy.Data;
 using StoreAppStudy.Endpoints.Categories;
@@ -63,5 +65,16 @@ app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handler);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handler);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handler);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handler);
+
+app.UseExceptionHandler("/error");
+app.Map("/error", (HttpContext httpContext) => {
+    var error = httpContext.Features?.Get<IExceptionHandlerFeature>()?.Error;
+    if(error != null) {
+        if(error is SqlException) {
+            return Results.Problem(title: "Database out", statusCode: 500);
+        }
+    }
+    return Results.Problem(title: "An error occured", statusCode: 500);
+});
 
 app.Run();

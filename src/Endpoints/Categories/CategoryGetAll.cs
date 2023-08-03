@@ -24,10 +24,7 @@ public class CategoryGetAll {
             return Results.NotFound("No category found");
         }
 
-        var response = categories.Select(c => new CategoryResponse {
-            id = c.id,
-            name = c.name
-        }); ;
+        var response = categories.Select(c => new CategoryResponse(c.id, c.name));
 
         return Results.Ok(response);
         

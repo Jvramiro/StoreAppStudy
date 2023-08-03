@@ -1,6 +1,3 @@
 ﻿namespace StoreAppStudy.Endpoints.Categories;
 
-public class CategoryResponse {
-    public Guid id { get; set; }
-    public string name { get; set; }
-}
+public record CategoryResponse(Guid id, string name);

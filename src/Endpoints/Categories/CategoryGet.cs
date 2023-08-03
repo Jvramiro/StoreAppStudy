@@ -20,9 +20,7 @@ public class CategoryGet {
             return Results.NotFound("Requested Id not found");
         }
 
-        var response = new CategoryRequest() {
-            name = category.name
-        };
+        var response = new CategoryRequest(category.name);
 
         return Results.Ok(response);
 

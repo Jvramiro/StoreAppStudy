@@ -30,9 +30,7 @@ public class CategoryPut {
         category.name = categoryRequest.name;
         category.editedBy = userId;
 
-        var response = new CategoryRequest() {
-            name = category.name
-        };
+        var response = new CategoryRequest(category.name);
 
         context.SaveChanges();
 
