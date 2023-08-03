@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StoreAppStudy.Data;
 using StoreAppStudy.Domain.Products;
 
@@ -11,13 +12,13 @@ public class CategoryGetAll {
     public static Delegate Handler => Action;
 
     [Authorize(Policy = "EmployeePolicy")]
-    public static IResult Action(ApplicationDbContext context, int page, int rows) {
+    public static async Task<IResult> Action(ApplicationDbContext context, int page, int rows) {
 
         if (rows > 100) {
             return Results.BadRequest("The number of rows cannot exceed 100.");
         }
 
-        var categories = context.Categories.Skip((page - 1) * rows).Take(rows).ToList();
+        var categories = await context.Categories.Skip((page - 1) * rows).Take(rows).ToListAsync();
 
         if (categories == null) {
             return Results.NotFound("No category found");

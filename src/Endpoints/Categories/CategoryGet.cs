@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StoreAppStudy.Data;
 using StoreAppStudy.Domain.Products;
 
@@ -11,9 +12,9 @@ public class CategoryGet {
     public static Delegate Handler => Action;
 
     [Authorize(Policy = "EmployeePolicy")]
-    public static IResult Action([FromRoute] Guid id, ApplicationDbContext context) {
+    public static async Task<IResult> Action([FromRoute] Guid id, ApplicationDbContext context) {
 
-        var category = context.Categories.Where(p => p.id == id).FirstOrDefault();
+        var category = await context.Categories.Where(p => p.id == id).FirstOrDefaultAsync();
 
         if (category == null) {
             return Results.NotFound("Requested Id not found");
