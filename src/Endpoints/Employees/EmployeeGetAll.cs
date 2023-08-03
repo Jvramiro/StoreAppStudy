@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -9,6 +10,7 @@ public class EmployeeGetAll {
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handler => Action;
 
+    [Authorize(Policy = "EmployeePolicy")]
     public static IResult Action(UserManager<IdentityUser> userManager, int page, int rows) {
 
         if(rows > 100) {

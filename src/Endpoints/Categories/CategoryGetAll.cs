@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoreAppStudy.Data;
 using StoreAppStudy.Domain.Products;
 
@@ -9,6 +10,7 @@ public class CategoryGetAll {
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handler => Action;
 
+    [Authorize(Policy = "EmployeePolicy")]
     public static IResult Action(ApplicationDbContext context, int page, int rows) {
 
         if (rows > 100) {

@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using StoreAppStudy.Data;
 using StoreAppStudy.Endpoints.Categories;
 using StoreAppStudy.Endpoints.Employees;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,15 +18,41 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthorization(options => {
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+    options.AddPolicy("EmployeePolicy", p => {
+        p.RequireAuthenticatedUser()
+            .RequireClaim("EmployeeCode");
+    });
+});
+builder.Services.AddAuthentication(options => {
+
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(options => {
+
+    options.TokenValidationParameters = new TokenValidationParameters() {
+        ValidateActor = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero,
+        ValidIssuer = builder.Configuration["JwtTokenSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtTokenSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtTokenSettings:Key"]))
+    };
+
+});
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
@@ -32,5 +62,6 @@ app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handler
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handler);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handler);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handler);
+app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handler);
 
 app.Run();
