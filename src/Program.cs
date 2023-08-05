@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using StoreAppStudy.Data;
 using StoreAppStudy.Endpoints.Categories;
 using StoreAppStudy.Endpoints.Employees;
+using StoreAppStudy.Endpoints.Products;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,6 +66,9 @@ app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handler);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handler);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handler);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handler);
+app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handler);
+app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handler);
+app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handler);
 
 app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext httpContext) => {

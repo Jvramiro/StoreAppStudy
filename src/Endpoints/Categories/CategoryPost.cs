@@ -17,7 +17,7 @@ public class CategoryPost {
         var userId = httpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
         var category = new Category(categoryRequest.name, userId, userId);
-
+        
         if (!category.IsValid) {
             return Results.ValidationProblem(category.Notifications.ConvertToProblemDetails());
         }
@@ -25,6 +25,6 @@ public class CategoryPost {
         await context.Categories.AddAsync(category);
         await context.SaveChangesAsync();
 
-        return Results.Created($"/categories/{category.id}", category);
+        return Results.Created($"/categories/{category.id}", category.name);
     }
 }

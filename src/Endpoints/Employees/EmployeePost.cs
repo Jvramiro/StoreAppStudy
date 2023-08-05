@@ -34,6 +34,6 @@ public class EmployeePost {
         }
 
 
-        return Results.Created($"/employee/{user.Id}", user.Id);
+        return Results.Created($"/employee/{user.Id}", user.UserName);
     }
 }
