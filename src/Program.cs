@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using StoreAppStudy.Data;
 using StoreAppStudy.Endpoints.Categories;
+using StoreAppStudy.Endpoints.Clients;
 using StoreAppStudy.Endpoints.Employees;
 using StoreAppStudy.Endpoints.Products;
 using System.Text;
@@ -70,6 +71,8 @@ app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handler);
 app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handler);
 app.MapMethods(ProductGetShowcase.Template, ProductGetShowcase.Methods, ProductGetShowcase.Handler);
 app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handler);
+app.MapMethods(ClientGet.Template, ClientGet.Methods, ClientGet.Handler);
+app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handler);
 
 app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext httpContext) => {

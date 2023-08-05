@@ -13,7 +13,7 @@ public class EmployeePost {
     public static async Task<IResult> Action(EmployeeRequest employeeRequest, UserManager<IdentityUser> userManager) {
 
         var user = new IdentityUser {
-            UserName = employeeRequest.name,
+            UserName = employeeRequest.email,
             Email = employeeRequest.email
         };
         var result = await userManager.CreateAsync(user, employeeRequest.password);
