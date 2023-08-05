@@ -68,6 +68,7 @@ app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.H
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handler);
 app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handler);
 app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handler);
+app.MapMethods(ProductGetShowcase.Template, ProductGetShowcase.Methods, ProductGetShowcase.Handler);
 app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handler);
 
 app.UseExceptionHandler("/error");

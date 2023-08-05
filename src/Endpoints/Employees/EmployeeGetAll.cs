@@ -18,7 +18,7 @@ public class EmployeeGetAll {
             return Results.BadRequest("The number of rows cannot exceed 100.");
         }
 
-        var users = await userManager.Users.Skip((page-1)*rows).Take(rows).ToListAsync();
+        var users = await userManager.Users.AsNoTracking().Skip((page-1)*rows).Take(rows).ToListAsync();
 
         var response = new List<EmployeeResponse>();
 

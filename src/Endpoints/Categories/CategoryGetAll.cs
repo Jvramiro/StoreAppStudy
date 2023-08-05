@@ -18,7 +18,7 @@ public class CategoryGetAll {
             return Results.BadRequest("The number of rows cannot exceed 100.");
         }
 
-        var categories = await context.Categories.Skip((page - 1) * rows).Take(rows).ToListAsync();
+        var categories = await context.Categories.AsNoTracking().Skip((page - 1) * rows).Take(rows).ToListAsync();
 
         if (categories == null) {
             return Results.NotFound("No category found");

@@ -18,7 +18,7 @@ public class ProductGetAll {
             return Results.BadRequest("The number of rows cannot exceed 100.");
         }
 
-        var products = await context.products.Skip((page - 1) * rows).Take(rows).ToListAsync();
+        var products = await context.products.AsNoTracking().Skip((page - 1) * rows).Take(rows).ToListAsync();
 
         if (products == null) {
             return Results.NotFound("No product found");

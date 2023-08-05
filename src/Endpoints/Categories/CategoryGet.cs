@@ -14,7 +14,7 @@ public class CategoryGet {
     [Authorize(Policy = "EmployeePolicy")]
     public static async Task<IResult> Action([FromRoute] Guid id, ApplicationDbContext context) {
 
-        var category = await context.Categories.Where(p => p.id == id).FirstOrDefaultAsync();
+        var category = await context.Categories.AsNoTracking().Where(p => p.id == id).FirstOrDefaultAsync();
 
         if (category == null) {
             return Results.NotFound("Requested Id not found");

@@ -14,7 +14,7 @@ public class ProductGet {
     [Authorize(Policy = "EmployeePolicy")]
     public static async Task<IResult> Action([FromRoute] Guid id, ApplicationDbContext context) {
 
-        var product = await context.products.Where(p => p.id == id).FirstOrDefaultAsync();
+        var product = await context.products.AsNoTracking().Where(p => p.id == id).FirstOrDefaultAsync();
 
         if (product == null) {
             return Results.NotFound("Requested Id not found");
